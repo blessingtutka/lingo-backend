@@ -7,3 +7,9 @@ export const generateToken = (user: User): string => {
         expiresIn: '4h',
     });
 };
+
+export const generateEmailToken = (userId: string): string => {
+    return jwt.sign({ userId }, config.jwtSecret, {
+        expiresIn: '2h',
+    });
+};
