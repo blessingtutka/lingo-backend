@@ -10,7 +10,7 @@ interface UserInput {
     password: string;
 }
 
-const getUserByEmail = async (email: string): Promise<User | null> => {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
         const userwithemail = await prisma.user.findUnique({
             where: {
@@ -23,7 +23,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     }
 };
 
-const validateUser = async (user: UserInput): Promise<ValidationError[]> => {
+export const validateUser = async (user: UserInput): Promise<ValidationError[]> => {
     const exists = await getUserByEmail(user.email);
 
     const errors: ValidationError[] = [];
@@ -33,14 +33,14 @@ const validateUser = async (user: UserInput): Promise<ValidationError[]> => {
     return errors;
 };
 
-const validateLogin = (user: Partial<UserInput>): ValidationError[] => {
+export const validateLogin = (user: Partial<UserInput>): ValidationError[] => {
     const errors: ValidationError[] = [];
     if (!user.email) errors.push({ field: 'email', message: 'Email is required' });
     if (!user.password) errors.push({ field: 'password', message: 'Password is required' });
     return errors;
 };
 
-function validatePasswordChange(data: { currentPassword: string; newPassword: string }): string[] {
+export function validatePasswordChange(data: { currentPassword: string; newPassword: string }): string[] {
     const errors: string[] = [];
 
     if (!data.currentPassword) {
@@ -56,7 +56,7 @@ function validatePasswordChange(data: { currentPassword: string; newPassword: st
     return errors;
 }
 
-async function validateUserUpdate(data: { name?: string; email?: string }): Promise<string[]> {
+export async function validateUserUpdate(data: { name?: string; email?: string }): Promise<string[]> {
     const errors: string[] = [];
 
     if (data.name && data.name.length < 2) {
@@ -71,5 +71,3 @@ async function validateUserUpdate(data: { name?: string; email?: string }): Prom
 
     return errors;
 }
-
-export { validateUser, validateLogin, validateUserUpdate, validatePasswordChange };
