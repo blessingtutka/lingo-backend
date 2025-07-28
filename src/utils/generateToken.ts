@@ -13,3 +13,9 @@ export const generateEmailToken = (userId: string): string => {
         expiresIn: '2h',
     });
 };
+
+export const generatePasswordResetToken = (userId: string): string => {
+    return jwt.sign({ userId }, config.jwtSecret, {
+        expiresIn: '5min',
+    });
+};
