@@ -13,6 +13,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
+// Existing enums and models
 enum CallStatus {
   REQUESTING 
   ONGOING 
@@ -22,20 +25,36 @@ enum CallStatus {
 }
 
 model User {
-  id             String    @id @default(uuid())
-  email          String    @unique
-  name           String?
-  password       String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id              String     @id @default(uuid())
+  email           String     @unique
+  emailVerified   Boolean    @default(false)
+  name            String?
+  password        String
+  twoFactorEnabled Boolean   @default(false)
+  twoFactorSecret String? 
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
-  contacts      User[]    @relation("UserContacts")
-  contactOf     User[]    @relation("UserContacts") 
+  contacts        User[]     @relation("UserContacts")
+  contactOf       User[]     @relation("UserContacts") 
 
-  callsMade      Call[]    @relation("CallerCalls")
-  callsReceived  Call[]    @relation("ReceiverCalls")
+  callsMade       Call[]     @relation("CallerCalls")
+  callsReceived   Call[]     @relation("ReceiverCalls")
+
+  notificationSettings NotificationSettings?
 
 }
+
+model NotificationSettings {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+
+  missedCallAlert Boolean  @default(true)
+  newContactAlert Boolean  @default(true)
+  summaryReport   Boolean  @default(true)
+}
+
 
 model Call {
   id           String     @id @default(uuid())
@@ -50,7 +69,6 @@ model Call {
   receiver     User       @relation("ReceiverCalls", fields: [receiverId], references: [id])
   
   summary      Summary?
-
 }
 
 model Summary {
@@ -60,6 +78,3 @@ model Summary {
   content   String
   createdAt DateTime @default(now())
 }
-
-
-
