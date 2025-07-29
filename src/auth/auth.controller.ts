@@ -451,7 +451,7 @@ export async function requestPasswordReset(req: Request, res: Response) {
 }
 
 export async function resetPassword(req: Request, res: Response) {
-    const token = req.query.token as string;
+    const token = req.body.token || req.query.token;
     const { newPassword } = req.body;
 
     if (!token) {
