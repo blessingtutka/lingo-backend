@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// Existing enums and models
+enum CallStatus {
+  REQUESTING 
+  ONGOING 
+  ENDED 
+  MISSED 
+  REJECTED
+}
+
+model User {
+  id              String     @id @default(uuid())
+  email           String     @unique
+  emailVerified   Boolean    @default(false)
+  name            String?
+  password        String
+  twoFactorEnabled Boolean   @default(false)
+  twoFactorSecret String? 
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  contacts        User[]     @relation("UserContacts")
+  contactOf       User[]     @relation("UserContacts") 
+
+  callsMade       Call[]     @relation("CallerCalls")
+  callsReceived   Call[]     @relation("ReceiverCalls")
+
+  messagesSended     Message[]     @relation("SenderMessages")
+  messagesReceived   Message[]     @relation("ReceiverMessages")
+
+  notificationSettings NotificationSettings?
+
+}
+
+model NotificationSettings {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+
+  missedCallAlert Boolean  @default(true)
+  newContactAlert Boolean  @default(true)
+  summaryReport   Boolean  @default(true)
+}
+
+
+model Call {
+  id           String     @id @default(uuid())
+  startedAt    DateTime   @default(now())
+  endedAt      DateTime?
+  status       CallStatus @default(REQUESTING)
+  peerId       String? 
+  
+  callerId     String
+  receiverId   String
+  caller       User       @relation("CallerCalls", fields: [callerId], references: [id])
+  receiver     User       @relation("ReceiverCalls", fields: [receiverId], references: [id])
+  
+  summary      Summary?
+}
+
+model Message {
+  id           String     @id @default(uuid())
+  sendAt       DateTime   @default(now())
+  arrivedAt    DateTime?
+  status       CallStatus @default(REQUESTING)
+  
+  senderId     String
+  receiverId   String
+  sender       User       @relation("SenderMessages", fields: [senderId], references: [id])
+  receiver     User       @relation("ReceiverMessages", fields: [receiverId], references: [id])
+  
+  originalText  String
+  text          String?
+}
+
+model Summary {
+  id        String   @id @default(uuid())
+  callId    String   @unique
+  call      Call     @relation(fields: [callId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
