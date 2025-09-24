@@ -1,7 +1,7 @@
 import prisma from '../../config/prisma';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { sendEmail } from '../../services/email.service';
+import { sendEmail } from '../email/email.service';
 import { generateEmailToken } from '../../utils/generateToken';
 
 const userTable = prisma.user;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as authService from './auth.service';
 import * as validation from '../../utils/validations';
 import { generateToken } from '../../utils/generateToken';
-import { AuthenticatedRequest } from '../../interfaces/interfaces';
+import { AuthenticatedRequest } from '../../types';
 import prisma from '../../config/prisma';
 
 interface UserRequest extends Request {
