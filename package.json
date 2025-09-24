@@ -1,0 +1,80 @@
+{
+  "name": "lingo-backend",
+  "version": "1.0.0",
+  "description": "Backend For the Lingo Application",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "npx tsx watch src/index.ts",
+    "migrate": "npx prisma migrate deploy",
+    "generate": "npx prisma generate",
+    "lint": "eslint 'src/**/*.ts'",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "prepare": "husky",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/blessingtutka/lingo-backend.git"
+  },
+  "author": "blessingtutka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blessingtutka/lingo-backend/issues"
+  },
+  "homepage": "https://github.com/blessingtutka/lingo-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "@types/multer": "^1.4.11",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^7.0.5",
+    "path": "^0.12.7",
+    "peer": "^1.0.2",
+    "peerjs": "^1.5.5",
+    "prisma": "^6.10.1",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.14.10",
+    "@types/nodemailer": "^6.4.17",
+    "@types/peerjs": "^0.0.30",
+    "@types/supertest": "^6.0.0",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.3.3",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "ts-loader": "^9.5.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5"
+  },
+  "rootDir": "src",
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
