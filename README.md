@@ -1,2 +1,3 @@
-# asher-backend
-The backend part of the Asher Project
+# lingo-backend
+
+The backend part of the lingo Project
